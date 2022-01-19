@@ -11,7 +11,7 @@ import SwiftUI
 struct PokemonUIApp: App {
     var body: some Scene {
         WindowGroup {
-            //ContentView()
+            PokemonListCoordinator.navigation()
         }
     }
 }
