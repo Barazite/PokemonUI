@@ -36,4 +36,31 @@ extension Color{
     static let darkType = Color(red: 122/255, green: 88/255, blue: 72/255)
     static let steelType = Color(red: 168/255, green: 168/255, blue: 192/255)
     static let fairyType = Color(red: 231/255, green: 159/255, blue: 231/255)
+    
+    static func getColorType(type: String) -> Color{
+        var color : Color
+        
+        switch type {
+        case "normal": color = Color.normalType
+        case "fighting": color = Color.fightingType
+        case "flying": color = Color.flyingType
+        case "poison": color = Color.poisonType
+        case "ground": color = Color.groundType
+        case "rock": color = Color.rockType
+        case "bug": color = Color.bugType
+        case "ghost": color = Color.ghostType
+        case "steel": color = Color.steelType
+        case "fire": color = Color.fireType
+        case "water": color = Color.waterType
+        case "grass": color = Color.grassType
+        case "electric": color = Color.electricType
+        case "psychic": color = Color.psychicType
+        case "ice": color = Color.iceType
+        case "dragon": color = Color.dragonType
+        case "dark": color = Color.darkType
+        case "fairy": color = Color.fairyType
+        default: color = Color.gray
+        }
+        return color
+    }
 }

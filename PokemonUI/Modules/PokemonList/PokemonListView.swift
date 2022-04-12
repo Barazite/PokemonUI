@@ -13,6 +13,7 @@ struct PokemonListView: View {
     
     init(){
         UINavigationBar.appearance().barTintColor = UIColor(Color.redPokemon)
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor(.white)]
     }
     
     var body: some View {
@@ -32,7 +33,7 @@ struct PokemonListView: View {
                         })
                         .overlay(
                             NavigationLink(
-                                destination: Text("\(pokemon.name)"),
+                                destination: PokemonDetailsView(pokemon: pokemon),
                                 label: {
                                     EmptyView()
                                 })
@@ -40,7 +41,6 @@ struct PokemonListView: View {
                         )
                 }
             }
-            .listRowBackground(Color.bluePokemon)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{
                 ToolbarItem(placement: .principal ){
@@ -91,7 +91,7 @@ struct PokemonCard: View {
         .cornerRadius(8)
         .listRowBackground(Color.bluePokemon)
         .onAppear(){
-            self.imageManager.getFrontImageFromUrl(imageUrl: self.pokemon.frontImage!)
+            self.imageManager.getFrontImageFromUrl(imageUrl: self.pokemon.artwork ?? self.pokemon.frontImage!)
         }
     }
 }

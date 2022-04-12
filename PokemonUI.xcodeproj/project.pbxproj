@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		205234AF27982FBE0002F665 /* PokemonDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205234AE27982FBE0002F665 /* PokemonDetailsView.swift */; };
 		2054DACA27956C4A00B72F19 /* PokemonUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2054DAC927956C4A00B72F19 /* PokemonUIApp.swift */; };
 		2054DACE27956C4C00B72F19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2054DACD27956C4C00B72F19 /* Assets.xcassets */; };
 		2054DAD127956C4C00B72F19 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2054DAD027956C4C00B72F19 /* Preview Assets.xcassets */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		205234AE27982FBE0002F665 /* PokemonDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonDetailsView.swift; sourceTree = "<group>"; };
 		2054DAC627956C4A00B72F19 /* PokemonUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PokemonUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2054DAC927956C4A00B72F19 /* PokemonUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonUIApp.swift; sourceTree = "<group>"; };
 		2054DACD27956C4C00B72F19 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -53,6 +55,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		205234AD27982F9B0002F665 /* PokemonDetails */ = {
+			isa = PBXGroup;
+			children = (
+				205234AE27982FBE0002F665 /* PokemonDetailsView.swift */,
+			);
+			path = PokemonDetails;
+			sourceTree = "<group>";
+		};
 		2054DABD27956C4A00B72F19 = {
 			isa = PBXGroup;
 			children = (
@@ -129,6 +139,7 @@
 		2054DADC27956E9200B72F19 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				205234AD27982F9B0002F665 /* PokemonDetails */,
 				2054DAE32795911300B72F19 /* PokemonList */,
 			);
 			path = Modules;
@@ -238,6 +249,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2054DAED279591D200B72F19 /* PokemonListCoordinator.swift in Sources */,
+				205234AF27982FBE0002F665 /* PokemonDetailsView.swift in Sources */,
 				2084C27F27960A1400489918 /* PokemonsListServerModel.swift in Sources */,
 				2054DAE72795917400B72F19 /* PokemonListPresenter.swift in Sources */,
 				2054DAE52795915800B72F19 /* PokemonListView.swift in Sources */,
