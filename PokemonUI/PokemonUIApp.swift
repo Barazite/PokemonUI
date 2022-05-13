@@ -9,6 +9,16 @@ import SwiftUI
 
 @main
 struct PokemonUIApp: App {
+    
+    init(){
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor(Color.redPokemon)
+        appearance.titleTextAttributes = [.foregroundColor: UIColor(.white)]
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = UINavigationBar.appearance().standardAppearance
+    }
+    
     var body: some Scene {
         WindowGroup {
             PokemonListCoordinator.navigation()

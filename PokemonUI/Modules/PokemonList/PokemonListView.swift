@@ -11,44 +11,42 @@ struct PokemonListView: View {
     
     @ObservedObject var presenter = PokemonListPresenterImpl()
     
-    init(){
-        UINavigationBar.appearance().barTintColor = UIColor(Color.redPokemon)
-        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor(.white)]
-    }
-    
     var body: some View {
-        if self.presenter.pokemonsList.isEmpty{
-            ProgressView("Cargando")
-                .onAppear(perform: {
-                    self.presenter.fetchPokemons()
-                })
-        }else{
-            List{
-                ForEach(self.presenter.pokemonsList){ pokemon in
-                    PokemonCard(pokemon: pokemon)
-                        .onAppear(perform: {
-                            if self.presenter.pokemonsList.last?.id == pokemon.id && !self.presenter.finalList{
-                                self.presenter.fetchPokemons()
-                            }
-                        })
-                        .overlay(
-                            NavigationLink(
-                                destination: PokemonDetailsView(pokemon: pokemon),
-                                label: {
-                                    EmptyView()
-                                })
+        HStack{
+            if self.presenter.pokemonsList.isEmpty{
+                ProgressView("Cargando")
+                    .onAppear(perform: {
+                        self.presenter.fetchPokemons()
+                    })
+            }else{
+                List{
+                    ForEach(self.presenter.pokemonsList){ pokemon in
+                        PokemonCard(pokemon: pokemon)
+                            .onAppear(perform: {
+                                if self.presenter.pokemonsList.last?.id == pokemon.id && !self.presenter.finalList{
+                                    self.presenter.fetchPokemons()
+                                }
+                            })
+                            .overlay(
+                                NavigationLink(
+                                    destination: PokemonDetailsView(pokemon: pokemon),
+                                    label: {
+                                        EmptyView()
+                                    })
                                 .opacity(0)
-                        )
+                            )
+                    }
                 }
+                .listStyle(PlainListStyle())
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar{
-                ToolbarItem(placement: .principal ){
-                    Image("Pokemon_logo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 100, height: 60, alignment: .center)
-                }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar{
+            ToolbarItem(placement: .principal ){
+                Image("Pokemon_logo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 100, height: 60, alignment: .center)
             }
         }
     }
@@ -86,7 +84,6 @@ struct PokemonCard: View {
                 }
             }
         }
-        .frame(maxWidth: .infinity)
         .background(Color.yellowPokemon)
         .cornerRadius(8)
         .listRowBackground(Color.bluePokemon)

@@ -16,7 +16,7 @@ struct Pokemon: Identifiable {
     let artwork: String?
     let frontImage: String?
     let backImage: String?
-    var stats : [String:Int] = [:]
+    var stats : [String:Float] = [:]
     
     init(businessModel: PokemonServerModel){
         self.id = businessModel.id ?? 0
@@ -30,11 +30,20 @@ struct Pokemon: Identifiable {
             self.types?.append($0.type?.name ?? "")
         }
         businessModel.stats?.forEach{
-            self.stats.updateValue($0.baseStat ?? 0, forKey: $0.stat?.name ?? "")
+            switch $0.stat?.name{
+            case "hp":self.stats.updateValue(Float($0.baseStat ?? 0), forKey: "HP")
+            case "attack":self.stats.updateValue(Float($0.baseStat ?? 0), forKey: "ATK")
+            case "defense":self.stats.updateValue(Float($0.baseStat ?? 0), forKey: "DEF")
+            case "special-defense":self.stats.updateValue(Float($0.baseStat ?? 0), forKey: "SPD")
+            case "special-attack":self.stats.updateValue(Float($0.baseStat ?? 0), forKey: "SPA")
+            case "speed":self.stats.updateValue(Float($0.baseStat ?? 0), forKey: "SPE")
+            default:
+                break
+            }
         }
     }
     
-    init (id: Int, name: String, types: [String], weight: Int, height: Int, frontImage: String, backImage: String, stats : [String: Int], artwork: String){
+    init (id: Int, name: String, types: [String], weight: Int, height: Int, frontImage: String, backImage: String, stats : [String: Float], artwork: String){
         self.id = id
         self.name = name.uppercased()
         self.weight = weight

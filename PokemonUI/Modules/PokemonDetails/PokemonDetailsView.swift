@@ -14,49 +14,50 @@ struct PokemonDetailsView: View {
     @ObservedObject var imageManager = ImageManager()
     
     var body: some View {
-        ScrollView{
-            PokemonCarrousel(pokemon: self.pokemon, imageManager: self.imageManager)
-                .padding(8)
-            VStack{
-                Text("\(pokemon.name)")
-                    .font(.title)
-                    .bold()
+        GeometryReader{ reader in
+            ScrollView{
+                PokemonCarrousel(pokemon: self.pokemon, imageManager: self.imageManager)
                     .padding(8)
                 
-                PokemonTypes(types: pokemon.types!)
-                
-                PokemonMeasures(height: Float(pokemon.height!), weight: Float(pokemon.weight!))
-                    .padding(.vertical, 20)
-                
-                Text("Base Stats")
-                    .bold()
-                    .font(.title3)
-                    .padding()
-                
-                
+                VStack(spacing: 15){
+                    Text("\(pokemon.name)")
+                        .font(.title)
+                        .bold()
+                        .padding(.top, 8)
+                    
+                    PokemonTypes(types: pokemon.types!)
+                    
+                    PokemonMeasures(height: Float(pokemon.height!), weight: Float(pokemon.weight!))
+                        
+                    PokemonStats(stats: pokemon.stats)
+                                        
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, minHeight: reader.frame(in: .global).height-290)
+                .background(rounded().fill(Color.bluePokemon))
             }
-            .frame(maxWidth: .infinity)
-            .background(rounded().fill(Color.bluePokemon))
+            .onAppear(perform: {
+                self.imageManager.getFrontImageFromUrl(imageUrl: self.pokemon.frontImage!)
+                self.imageManager.getBackImageFromUrl(imageUrl: self.pokemon.backImage!)
+            })
+            .background(Color.yellowPokemon)
+            .ignoresSafeArea(edges: [.horizontal, .bottom])
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("\(pokemon.name)")
+            .navigationBarBackButtonHidden(true)
+            .navigationBarItems(leading:
+                                    Button(action: {presentationMode.wrappedValue.dismiss()}, label: {
+                Image(systemName: "chevron.backward")
+                    .foregroundColor(.white)
+            }))
         }
-        .onAppear(perform: {
-            self.imageManager.getFrontImageFromUrl(imageUrl: self.pokemon.frontImage!)
-            self.imageManager.getBackImageFromUrl(imageUrl: self.pokemon.backImage!)
-        })
-        .background(Color.yellowPokemon)
-        .ignoresSafeArea(edges: [.horizontal, .bottom])
-        .navigationTitle("\(pokemon.name)")
-        .navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading:
-                                Button(action: {presentationMode.wrappedValue.dismiss()}, label: {
-                                    Image(systemName: "chevron.backward")
-                                        .foregroundColor(.white)
-                                }))
     }
 }
 
+
 struct PokemonDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        PokemonDetailsView(pokemon: Pokemon(id: 120, name: "Pikachu", types: ["electric", "normal"], weight: 62, height: 35, frontImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png", backImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/25.png", stats: ["hp" : 35, "attack" : 55, "defense" : 40, "special-attack" : 50, "special-defense" : 50, "speed" : 90], artwork: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/154.png"))
+        PokemonDetailsView(pokemon: Pokemon(id: 120, name: "Pikachu", types: ["electric", "normal"], weight: 62, height: 35, frontImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png", backImage: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/25.png", stats: ["HP" : 35.0, "ATK" : 55.0, "DEF" : 40.0, "SPA" : 50.0, "SPD" : 50.0, "SPE" : 90.0], artwork: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/154.png"))
     }
 }
 
@@ -111,6 +112,7 @@ struct PokemonCarrousel : View{
                 }
             }
         }
+        .frame(height: 300)
     }
 }
 
@@ -171,6 +173,102 @@ struct PokemonMeasures: View{
                     .frame(maxWidth: 120)
                     .padding(.horizontal, 12)
             }
+        }
+    }
+}
+
+struct PokemonStats: View {
+    
+    var stats: [String:Float]
+    @State private var width = CGFloat(0)
+        
+    var body: some View{
+        
+        Text("Base Stats")
+            .bold()
+            .font(.title3)
+            .padding(.bottom, 15)
+        
+        VStack(spacing: 20){
+            ForEach(stats.keys.sorted(), id: \.self){ key in
+//                HStack(alignment: .top){
+//                    Text("\(key)")
+//                        .bold()
+//                        .frame(width: 40)
+//
+//                    ZStack(alignment: .leading){
+//                        RoundedRectangle(cornerRadius: 20)
+//                            .fill(.gray)
+//                            .frame(width: 160, height: 15)
+//                        RoundedRectangle(cornerRadius: 20)
+//                            .fill(Color.yellowPokemon)
+//                            .frame(width:width, height: 15)
+//                            .animation(
+//                                .easeInOut(duration: 2),
+//                                value: self.width
+//                            )
+//                            .onAppear(){
+//                                let n = stats[key]!/100.0
+//                                if n<1{
+//                                    self.width = 160*CGFloat(n)
+//                                }else{
+//                                    self.width = 160
+//                                }
+//                            }
+//                    }
+//                CustomRectangle(value: stats[key]!, key: key)
+//                    .padding(.horizontal, 20)
+//
+//
+//                    Text(String(format: "%2.0f", stats[key]!))
+//                        .bold()
+//                        .frame(width: 40)
+//                }
+            CustomRectangle(value: stats[key]!, key: key)
+                .padding(.horizontal, 20)
+            }
+        }
+    }
+}
+
+struct CustomRectangle: View{
+    var value : Float
+    var key : String
+    
+    @State private var width = CGFloat(0)
+    
+    var body: some View{
+        HStack(alignment: .top){
+            Text("\(key)")
+                .bold()
+                .frame(width: 40)
+            
+            ZStack(alignment: .leading){
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(.gray)
+                    .frame(width: 160, height: 15)
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(Color.yellowPokemon)
+                    .frame(width:width, height: 15)
+                    .animation(
+                        .easeInOut(duration: 2),
+                        value: self.width
+                    )
+                    .onAppear(){
+                        let n = value/100.0
+                        if n<1{
+                            self.width = 160*CGFloat(n)
+                        }else{
+                            self.width = 160
+                        }
+                    }
+            }
+            .padding(.horizontal, 20)
+            
+            
+            Text(String(format: "%2.0f", self.value))
+                .bold()
+                .frame(width: 40)
         }
     }
 }
