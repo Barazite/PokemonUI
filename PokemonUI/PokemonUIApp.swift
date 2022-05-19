@@ -17,6 +17,7 @@ struct PokemonUIApp: App {
         appearance.titleTextAttributes = [.foregroundColor: UIColor(.white)]
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = UINavigationBar.appearance().standardAppearance
+        UITextField.appearance().clearButtonMode = .whileEditing
     }
     
     var body: some Scene {

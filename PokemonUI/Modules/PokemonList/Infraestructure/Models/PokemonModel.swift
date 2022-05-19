@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Pokemon: Identifiable {
+struct Pokemon: Identifiable, Hashable {
     let id : Int
     let name: String
     var types: [String]? = []
@@ -34,9 +34,9 @@ struct Pokemon: Identifiable {
             case "hp":self.stats.updateValue(Float($0.baseStat ?? 0), forKey: "HP")
             case "attack":self.stats.updateValue(Float($0.baseStat ?? 0), forKey: "ATK")
             case "defense":self.stats.updateValue(Float($0.baseStat ?? 0), forKey: "DEF")
-            case "special-defense":self.stats.updateValue(Float($0.baseStat ?? 0), forKey: "SPD")
-            case "special-attack":self.stats.updateValue(Float($0.baseStat ?? 0), forKey: "SPA")
-            case "speed":self.stats.updateValue(Float($0.baseStat ?? 0), forKey: "SPE")
+            case "special-defense":self.stats.updateValue(Float($0.baseStat ?? 0), forKey: "SP.D")
+            case "special-attack":self.stats.updateValue(Float($0.baseStat ?? 0), forKey: "SP.A")
+            case "speed":self.stats.updateValue(Float($0.baseStat ?? 0), forKey: "SPD")
             default:
                 break
             }
@@ -55,3 +55,5 @@ struct Pokemon: Identifiable {
         self.artwork = artwork
     }
 }
+
+

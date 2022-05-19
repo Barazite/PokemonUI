@@ -10,6 +10,7 @@ import SwiftUI
 struct PokemonListView: View {
     
     @ObservedObject var presenter = PokemonListPresenterImpl()
+    @State private var searchText = ""
     
     var body: some View {
         HStack{
@@ -19,30 +20,36 @@ struct PokemonListView: View {
                         self.presenter.fetchPokemons()
                     })
             }else{
-                List{
-                    ForEach(self.presenter.pokemonsList){ pokemon in
-                        PokemonCard(pokemon: pokemon)
-                            .onAppear(perform: {
-                                if self.presenter.pokemonsList.last?.id == pokemon.id && !self.presenter.finalList{
-                                    self.presenter.fetchPokemons()
-                                }
-                            })
-                            .overlay(
-                                NavigationLink(
-                                    destination: PokemonDetailsView(pokemon: pokemon),
-                                    label: {
-                                        EmptyView()
-                                    })
-                                .opacity(0)
-                            )
+                VStack{
+                    SearchBar(searchText: $searchText)
+                    
+                    List{
+                        ForEach(self.presenter.pokemonsList.filter({ (pokemon: Pokemon) -> Bool in
+                            return pokemon.name.lowercased().contains(searchText.lowercased()) || searchText == ""})){ pokemon in
+                            PokemonCard(pokemon: pokemon)
+//                                .onAppear(perform: {
+//                                    if self.presenter.pokemonsList.last?.name == pokemon.name && !self.presenter.finalList{
+//                                        self.presenter.fetchPokemons()
+//                                    }
+//                                })
+                                .overlay(
+                                    NavigationLink(
+                                        destination: PokemonDetailsView(pokemon: pokemon),
+                                        label: {
+                                            EmptyView()
+                                        })
+                                    .opacity(0)
+                                )
+                        }
                     }
+                    .listStyle(PlainListStyle())
                 }
-                .listStyle(PlainListStyle())
+                .background(Color.bluePokemon)
             }
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar{
-            ToolbarItem(placement: .principal ){
+            ToolbarItem(placement: .principal){
                 Image("Pokemon_logo")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -62,17 +69,17 @@ struct PokemonCard: View {
     
     var pokemon : Pokemon
     @ObservedObject var imageManager = ImageManager()
-    @State var imageShow = false
+    //@State var imageShow = false
     
     var body: some View{
         HStack(alignment: .center){
             Image(uiImage: ((self.imageManager.front.isEmpty ? UIImage(named: "Pokemon_logo") : UIImage(data: self.imageManager.front))!))
-                .renderingMode(!self.imageShow ? .template : .original)
+                //.renderingMode(!self.imageShow ? .template : .original)
                 .resizable()
                 .frame(width: 150, height: 150)
-                .onTapGesture {
-                    self.imageShow.toggle()
-                }
+//                .onTapGesture {
+//                    self.imageShow.toggle()
+//                }
             VStack{
                 Spacer()
                 Text(pokemon.name).font(.title3)
@@ -88,7 +95,28 @@ struct PokemonCard: View {
         .cornerRadius(8)
         .listRowBackground(Color.bluePokemon)
         .onAppear(){
-            self.imageManager.getFrontImageFromUrl(imageUrl: self.pokemon.artwork ?? self.pokemon.frontImage!)
+            self.imageManager.getFrontImageFromUrl(imageUrl: self.pokemon.artwork)
         }
+    }
+}
+
+struct SearchBar: View {
+    
+    @Binding var searchText: String
+    
+    var body: some View {
+        ZStack {
+            Rectangle()
+                .foregroundColor(Color.white)
+            HStack {
+                Image(systemName: "magnifyingglass")
+                TextField("Search ..", text: $searchText)
+            }
+            .foregroundColor(.gray)
+            .padding(.leading, 13)
+        }
+        .frame(height: 40)
+        .cornerRadius(13)
+        .padding()
     }
 }

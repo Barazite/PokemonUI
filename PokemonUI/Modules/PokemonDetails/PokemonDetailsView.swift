@@ -37,8 +37,8 @@ struct PokemonDetailsView: View {
                 .background(rounded().fill(Color.bluePokemon))
             }
             .onAppear(perform: {
-                self.imageManager.getFrontImageFromUrl(imageUrl: self.pokemon.frontImage!)
-                self.imageManager.getBackImageFromUrl(imageUrl: self.pokemon.backImage!)
+                self.imageManager.getFrontImageFromUrl(imageUrl: self.pokemon.frontImage)
+                self.imageManager.getBackImageFromUrl(imageUrl: self.pokemon.backImage)
             })
             .background(Color.yellowPokemon)
             .ignoresSafeArea(edges: [.horizontal, .bottom])
@@ -181,7 +181,7 @@ struct PokemonStats: View {
     
     var stats: [String:Float]
     @State private var width = CGFloat(0)
-        
+    
     var body: some View{
         
         Text("Base Stats")
@@ -191,41 +191,8 @@ struct PokemonStats: View {
         
         VStack(spacing: 20){
             ForEach(stats.keys.sorted(), id: \.self){ key in
-//                HStack(alignment: .top){
-//                    Text("\(key)")
-//                        .bold()
-//                        .frame(width: 40)
-//
-//                    ZStack(alignment: .leading){
-//                        RoundedRectangle(cornerRadius: 20)
-//                            .fill(.gray)
-//                            .frame(width: 160, height: 15)
-//                        RoundedRectangle(cornerRadius: 20)
-//                            .fill(Color.yellowPokemon)
-//                            .frame(width:width, height: 15)
-//                            .animation(
-//                                .easeInOut(duration: 2),
-//                                value: self.width
-//                            )
-//                            .onAppear(){
-//                                let n = stats[key]!/100.0
-//                                if n<1{
-//                                    self.width = 160*CGFloat(n)
-//                                }else{
-//                                    self.width = 160
-//                                }
-//                            }
-//                    }
-//                CustomRectangle(value: stats[key]!, key: key)
-//                    .padding(.horizontal, 20)
-//
-//
-//                    Text(String(format: "%2.0f", stats[key]!))
-//                        .bold()
-//                        .frame(width: 40)
-//                }
-            CustomRectangle(value: stats[key]!, key: key)
-                .padding(.horizontal, 20)
+                CustomRectangle(value: stats[key]!, key: key)
+                    .padding(.horizontal, 20)
             }
         }
     }

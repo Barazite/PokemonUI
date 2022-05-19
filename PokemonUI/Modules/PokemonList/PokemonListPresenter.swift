@@ -28,10 +28,12 @@ class PokemonListPresenterImpl: BasePresenter, ObservableObject{
 extension PokemonListPresenterImpl: PokemonListPresenterProtocol{
     func pokemonsFromInteractor(data: [Pokemon], total: Int, nextURL: String?){
         self.pokemonsList.append(contentsOf: data)
+        self.pokemonsList.sort{$0.id < $1.id}
         if self.pokemonsList.count == total{
             finalList = true
         }else{
             self.url = nextURL ?? ""
+            fetchPokemons()
         }
     }
 }
